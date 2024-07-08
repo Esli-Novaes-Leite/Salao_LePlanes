@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salão Lê Planes</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Salão Lê Planes</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="cadastrar.html">Cadastrar Cliente</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Clientes Cadastrados</h2>
+        <form id="searchForm">
+            <label for="busca">Buscar por nome:</label>
+            <input type="text" id="busca" name="busca" placeholder="Digite o nome do cliente">
+            <button type="submit">Buscar</button>
+            <a href="index.html" class="cancelar-busca-btn">Cancelar Busca</a>
+        </form>
+        <div id="clientesTable">
+            <!-- Tabela de clientes será carregada aqui -->
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Salão Lê Planes</p>
+    </footer>
+
+    <script>
+        $(document).ready(function() {
+            function loadClientes(busca = '') {
+                $.ajax({
+                    url: 'load_clientes.php',
+                    type: 'POST',
+                    data: { busca: busca },
+                    success: function(data) {
+                        $('#clientesTable').html(data);
+                    }
+                });
+            }
+
+            $('#searchForm').on('submit', function(e) {
+                e.preventDefault();
+                const busca = $('#busca').val();
+                loadClientes(busca);
+            });
+
+            // Carrega todos os clientes inicialmente
+            loadClientes();
+        });
+    </script>
+</body>
+</html>
